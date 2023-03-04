@@ -52,4 +52,14 @@ public class CharacterMovement : MonoBehaviour
             transform.LookAt(transform.position + direction);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IEnemy enemy = other.GetComponent<IEnemy>();
+        if (enemy != null && !enemy.isDead())
+        {
+            PunchAnimation();
+            enemy.OnDeath();
+        }
+    }
 }
