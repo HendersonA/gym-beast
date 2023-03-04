@@ -1,37 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IEnemy
 {
+    private Rigidbody _rigidbodyEnemy;
+    private Animator _animator;
+    private Collider _mainCollider;
+    private Collider[] _allCollider;
+    private bool _isEnemyDead = false;
 
-    private bool isEnemyDead = false;
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        _rigidbodyEnemy = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
+        _mainCollider = GetComponent<Collider>();
+        _allCollider = GetComponentsInChildren<Collider>(true);
     }
 
     public void OnDeath()
     {
         ActiveRagdoll();
-        isEnemyDead = true;
+        _isEnemyDead = true;
         enabled = false;
     }
 
     private void ActiveRagdoll()
     {
+        EnableRagdoll(true);
+    }
 
+    private void EnableRagdoll(bool isRagdoll)
+    {
+        foreach (var collider in _allCollider)
+        {
+            collider.enabled = isRagdoll;
+            _mainCollider.enabled = !isRagdoll;
+            _rigidbodyEnemy.useGravity = !isRagdoll;
+            _animator.enabled = !isRagdoll;
+        }
     }
 
     public bool isDead()
     {
-        return isEnemyDead;
+        return _isEnemyDead;
     }
 }
