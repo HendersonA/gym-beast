@@ -7,20 +7,45 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 0.15f;
 
     private CharacterController _characterController;
+    private Animator _animator;
 
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
+        _animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        MoveByJoystick(joystick.Horizontal, joystick.Vertical);
+        MoveCharacter();
     }
 
-    private void MoveByJoystick(float inputHorizontal, float inputVertical)
+    private void MoveCharacter()
     {
-        Vector3 direction = new Vector3(inputHorizontal * moveSpeed, 0, inputVertical * moveSpeed);
+        MoveByJoystick();
+        WalkAnimation();
+    }
+
+    public void PunchAnimation()
+    {
+        _animator.SetTrigger("Punch");
+    }
+
+    private void WalkAnimation()
+    {
+        if ((joystick.Horizontal != 0 || joystick.Vertical != 0))
+        {
+            _animator.SetBool("Move", true);
+        }
+        else
+        {
+            _animator.SetBool("Move", false);
+        }
+    }
+
+    private void MoveByJoystick()
+    {
+        Vector3 direction = new Vector3(joystick.Horizontal * moveSpeed, 0, joystick.Vertical * moveSpeed);
         _characterController.Move(direction * Time.fixedDeltaTime);
         if (direction != Vector3.zero)
         {
