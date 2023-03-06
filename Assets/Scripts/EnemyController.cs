@@ -7,6 +7,8 @@ public class EnemyController : MonoBehaviour, IEnemy
     private Collider _mainCollider;
     private Collider[] _allCollider;
     private bool _isEnemyDead = false;
+    private bool _isEnemyStacked = false;
+    public bool Stacked { get => _isEnemyStacked; set => _isEnemyStacked = value; }
 
     private void Awake()
     {
@@ -33,7 +35,7 @@ public class EnemyController : MonoBehaviour, IEnemy
         foreach (var collider in _allCollider)
         {
             collider.enabled = isRagdoll;
-            _mainCollider.enabled = !isRagdoll;
+            // _mainCollider.enabled = !isRagdoll;
             _rigidbodyEnemy.useGravity = !isRagdoll;
             _animator.enabled = !isRagdoll;
         }
