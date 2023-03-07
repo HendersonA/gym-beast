@@ -5,7 +5,6 @@ public class CharacterMovement : MonoBehaviour, IPlayer
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private float moveSpeed = 0.15f;
-    // [SerializeField] private Tra shoulder;
     private CharacterController _characterController;
     private Animator _animator;
 
@@ -60,13 +59,6 @@ public class CharacterMovement : MonoBehaviour, IPlayer
         {
             PunchAnimation();
             enemy.OnDeath();
-        }
-        else if (enemy != null && enemy.isDead() && !enemy.Stacked)
-        {
-            enemy.Stacked = true;
-            Joint enemyRigidBody = other.GetComponent<Joint>();
-            enemyRigidBody.transform.position = Vector3.zero;
-            enemyRigidBody.connectedBody = this.GetComponent<Rigidbody>();
         }
     }
 }
