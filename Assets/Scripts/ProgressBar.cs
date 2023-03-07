@@ -5,11 +5,11 @@ using System;
 public class ProgressBar : MonoBehaviour
 {
     public event Action OnLoaded;
+    public event Action OnEmpty;
     [SerializeField] private Image progressBarImage;
     [SerializeField] private float speedLoad = 0.05f;
     private float _progressBarValue = 0f;
     private bool _isProgressBarFilled = false;
-
 
     private void FullProgressBar()
     {
@@ -20,13 +20,14 @@ public class ProgressBar : MonoBehaviour
         }
         else if (progressBarImage.fillAmount == 1f && _isProgressBarFilled == false)
         {
-            OnLoaded.Invoke();
+            OnLoaded?.Invoke();
             _isProgressBarFilled = true;
         }
     }
 
     private void EmptyProgressBar()
     {
+        OnEmpty?.Invoke();
         _isProgressBarFilled = false;
         _progressBarValue = 0f;
         SetProgressBarValue(progressBarImage.fillAmount = _progressBarValue);
