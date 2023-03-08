@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PowerUpMenu : MonoBehaviour
+public class PowerUpUI : MonoBehaviour
 {
     [SerializeField] private GameObject powerUpMenu;
     [SerializeField] private ProgressBar progressBar;
