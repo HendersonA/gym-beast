@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IEnemy
 {
-    [SerializeField] private EnemyConfig enemyConfig;
     private ScoreManager _score;
     private Rigidbody _rigidbodyEnemy;
     private Animator _animator;
@@ -20,19 +19,26 @@ public class EnemyController : MonoBehaviour, IEnemy
         _score = FindObjectOfType<ScoreManager>();
         _rigidbodyEnemy = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-        _allCollider = GetComponentsInChildren<Collider>(true);
+        _allCollider = GetComponentsInChildren<Collider>();
     }
 
-    private void OnDisable()
+    private void OnEnable()
     {
-        _score.IncreaseScore(enemyConfig.Score);
+        OnAlive();
     }
 
     public void OnDeath()
     {
-        ActiveRagdoll();
+        EnableRagdoll(true);
         _isEnemyDead = true;
         enabled = false;
+    }
+
+    private void OnAlive()
+    {
+        EnableRagdoll(false);
+        _isEnemyDead = false;
+        enabled = true;
     }
 
     public bool isDead()
@@ -46,16 +52,11 @@ public class EnemyController : MonoBehaviour, IEnemy
         this.transform.SetParent(newTransform);
     }
 
-    private void ActiveRagdoll()
-    {
-        EnableRagdoll(true);
-    }
-
     private void EnableRagdoll(bool isRagdoll)
     {
-        foreach (var collider in _allCollider)
+        for (int i = 1; i < _allCollider.Length; i++)
         {
-            collider.enabled = isRagdoll;
+            _allCollider[i].enabled = isRagdoll;
             _rigidbodyEnemy.useGravity = !isRagdoll;
             _animator.enabled = !isRagdoll;
         }
