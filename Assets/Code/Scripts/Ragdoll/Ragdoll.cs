@@ -17,14 +17,9 @@ namespace Ragdoll
             _allCollider = GetComponentsInChildren<Collider>();
         }
 
-        private void OnEnable()
-        {
-            EnableRagdoll(false);
-        }
-
         public void EnableRagdoll(bool isRagdoll)
         {
-            for (int i = 1; i < _allCollider.Length; i++)
+            for (int i = 0; i < _allCollider.Length; i++)
             {
                 _allCollider[i].enabled = isRagdoll;
                 _mainRigidbody.useGravity = !isRagdoll;
