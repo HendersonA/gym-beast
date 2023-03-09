@@ -7,5 +7,6 @@ namespace Ragdoll
         Rigidbody BoneHips { get; }
         void EnableRagdoll(bool isRagdoll);
         void ResetArmaturePosition();
+        void OriginArmaturePosition();
     }
 }
