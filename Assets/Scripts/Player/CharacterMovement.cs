@@ -1,17 +1,18 @@
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
 public class CharacterMovement : MonoBehaviour, IPlayer
 {
+    // private readonly 
     [SerializeField] private Joystick joystick;
     [SerializeField] private float moveSpeed = 0.15f;
-    private CharacterController _characterController;
     private Animator _animator;
+    private Rigidbody _rigidbody;
 
     private void Start()
     {
-        _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -44,14 +45,16 @@ public class CharacterMovement : MonoBehaviour, IPlayer
 
     private void MoveByJoystick()
     {
-        Vector3 direction = new Vector3(joystick.Horizontal * moveSpeed, 0, joystick.Vertical * moveSpeed);
-        _characterController.Move(direction * Time.fixedDeltaTime);
+        Vector3 direction = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
+        direction = direction.normalized * moveSpeed * Time.deltaTime;
+        _rigidbody.MovePosition(transform.position + direction);
         if (direction != Vector3.zero)
         {
             transform.LookAt(transform.position + direction);
         }
     }
 
+    //TODO Separar o if
     private void OnTriggerEnter(Collider other)
     {
         IEnemy enemy = other.GetComponent<IEnemy>();
@@ -59,6 +62,10 @@ public class CharacterMovement : MonoBehaviour, IPlayer
         {
             PunchAnimation();
             enemy.OnDeath();
+        }
+        else if (enemy != null && enemy.isDead())
+        {
+            enemy.CanStack = true;
         }
     }
 }

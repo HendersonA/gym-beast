@@ -9,7 +9,7 @@ namespace PowerUps
 
         public override void Apply(GameObject target)
         {
-            target.GetComponent<StackEnemy>().LimitStack += amount;
+            target.GetComponent<StackAbility>().SetLimitStack(amount);
         }
     }
 }
