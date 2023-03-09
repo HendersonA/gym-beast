@@ -1,23 +1,22 @@
+using System;
 using UnityEngine;
+using UnityEditor;
 
 public class EnemyController : MonoBehaviour, IEnemy
 {
-    private ScoreManager _score;
-    private Rigidbody _rigidbodyEnemy;
+    public Rigidbody BoneHips;
+    private Rigidbody _mainRigidbody;
     private Animator _animator;
     private Collider[] _allCollider;
     private bool _isEnemyDead = false;
-    private bool _isEnemyStacked = false;
-    public bool Stacked
-    {
-        get => _isEnemyStacked;
-        set => _isEnemyStacked = value;
-    }
+    public bool IsStacked { get; set; }
+    public bool CanStack { get; set; }
+
+    [SerializeField] private int force = 10;
 
     private void Awake()
     {
-        _score = FindObjectOfType<ScoreManager>();
-        _rigidbodyEnemy = GetComponent<Rigidbody>();
+        _mainRigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
         _allCollider = GetComponentsInChildren<Collider>();
     }
@@ -25,20 +24,22 @@ public class EnemyController : MonoBehaviour, IEnemy
     private void OnEnable()
     {
         OnAlive();
+        IsStacked = false;
+        CanStack = false;
     }
 
+    [ContextMenu("Ragdoll")]
     public void OnDeath()
     {
         EnableRagdoll(true);
         _isEnemyDead = true;
-        enabled = false;
     }
 
     private void OnAlive()
     {
         EnableRagdoll(false);
         _isEnemyDead = false;
-        enabled = true;
+        IsStacked = false;
     }
 
     public bool isDead()
@@ -46,19 +47,20 @@ public class EnemyController : MonoBehaviour, IEnemy
         return _isEnemyDead;
     }
 
-    public void SetPosition(Transform newTransform)
-    {
-        this.transform.position = newTransform.position;
-        this.transform.SetParent(newTransform);
-    }
-
     private void EnableRagdoll(bool isRagdoll)
     {
         for (int i = 1; i < _allCollider.Length; i++)
         {
             _allCollider[i].enabled = isRagdoll;
-            _rigidbodyEnemy.useGravity = !isRagdoll;
+            _mainRigidbody.useGravity = !isRagdoll;
             _animator.enabled = !isRagdoll;
         }
+    }
+
+    public void ResetArmaturePosition()
+    {
+        IsStacked = true;
+        BoneHips.isKinematic = true;
+        BoneHips.transform.position = _mainRigidbody.transform.position;
     }
 }

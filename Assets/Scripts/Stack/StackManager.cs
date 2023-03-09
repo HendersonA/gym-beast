@@ -3,8 +3,7 @@ using UnityEngine;
 public class StackManager : MonoBehaviour
 {
     [SerializeField] private ProgressBar progressBar;
-    [SerializeField] private StackEnemy stackEnemy;
-    [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private StackAbility stackAbility;
 
     private void Start()
     {
@@ -13,6 +12,6 @@ public class StackManager : MonoBehaviour
 
     private void UnloadStack()
     {
-        scoreManager.IncreaseScore(stackEnemy.UnloadStack());
+        stackAbility.UnloadStack();
     }
 }

@@ -1,9 +1,10 @@
-using UnityEngine;
+using System;
 
 public interface IEnemy
 {
     void OnDeath();
     bool isDead();
-    bool Stacked { get; set; }
-    void SetPosition(Transform newTransform);
+    void ResetArmaturePosition();
+    bool IsStacked { get; set; }
+    bool CanStack { get; set; }
 }
