@@ -22,14 +22,18 @@ namespace Enemy
             OnAlive();
         }
 
+        [ContextMenu("OnDeath")]
         public void OnDeath()
         {
             _ragdoll.EnableRagdoll(true);
             _isEnemyDead = true;
         }
 
-        private void OnAlive()
+        [ContextMenu("OnAlive")]
+        public void OnAlive()
         {
+            _ragdoll.EnableRagdoll(false);
+            _ragdoll.OriginArmaturePosition();
             _isEnemyDead = false;
             IsStacked = false;
             CanStack = false;

@@ -37,5 +37,13 @@ namespace Ragdoll
             boneHips.isKinematic = true;
             boneHips.transform.position = _mainRigidbody.transform.position;
         }
+
+        public void OriginArmaturePosition()
+        {
+            boneHips.isKinematic = false;
+            boneHips.transform.position = Vector3.zero;
+            transform.position = Vector3.zero;
+
+        }
     }
 }
