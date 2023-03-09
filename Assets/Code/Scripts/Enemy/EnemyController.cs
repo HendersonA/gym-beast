@@ -19,17 +19,16 @@ namespace Enemy
 
         private void OnEnable()
         {
-            OnAlive();
+            if (_isEnemyDead)
+                OnAlive();
         }
 
-        [ContextMenu("OnDeath")]
         public void OnDeath()
         {
             _ragdoll.EnableRagdoll(true);
             _isEnemyDead = true;
         }
 
-        [ContextMenu("OnAlive")]
         public void OnAlive()
         {
             _ragdoll.EnableRagdoll(false);
